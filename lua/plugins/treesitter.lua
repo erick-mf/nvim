@@ -1,0 +1,46 @@
+return {
+  "nvim-treesitter/nvim-treesitter",
+  build = ":TSUpdate",
+  event = { "BufReadPre", "BufNewFile" },
+  main = "nvim-treesitter.configs",
+  opts = {
+    ensure_installed = {
+      "css",
+      "html",
+      "javascript",
+      "json",
+      "lua",
+      "luadoc",
+      "markdown",
+      "markdown_inline",
+      "php",
+      "bash",
+      "typescript",
+      "vim",
+      "vimdoc",
+      "xml",
+      "toml",
+      "http",
+      "go",
+      "vue",
+      "angular",
+      "astro",
+    },
+    highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+    },
+    indent = {
+      enable = true,
+    },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = "<C-space>",
+        node_incremental = "<C-space>",
+        node_decremental = "<C-space>-",
+        scope_incremental = nil,
+      },
+    },
+  },
+}
