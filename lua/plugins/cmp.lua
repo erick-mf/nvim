@@ -9,10 +9,12 @@ return {
     "petertriho/cmp-git",
     "saadparwaiz1/cmp_luasnip",
     "onsails/lspkind-nvim",
+    "rafamadriz/friendly-snippets",
     { "L3MON4D3/LuaSnip", version = "v2.*" },
   },
   event = { "InsertEnter", "CmdlineEnter" },
   config = function()
+    require("luasnip.loaders.from_vscode").lazy_load()
     local cmp = require("cmp")
     local luasnip = require("luasnip")
     local lspkind = require("lspkind")

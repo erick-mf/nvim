@@ -11,11 +11,9 @@ return {
         typescript = { require("formatter.filetypes.javascript").prettier },
         lua = { require("formatter.filetypes.lua").stylua },
         java = { require("formatter.filetypes.c").clangformat },
-        go = { require("formatter.filetypes.go").gofmt, require("formatter.filetypes.go").goimports },
-        c = { require("formatter.filetypes.c").clangformat },
-        h = { require("formatter.filetypes.c").clangformat },
         xml = { require("formatter.filetypes.xml").xmlformat },
         json = { require("formatter.filetypes.json").prettier },
+        php = { require("formatter.filetypes.php").phpcbf },
         ["*"] = { require("formatter.filetypes.any").remove_trailing_whitespace },
       },
     })

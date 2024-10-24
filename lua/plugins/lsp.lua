@@ -42,14 +42,22 @@ return {
     local servers = {
       html = {},
       cssls = {},
-      emmet_ls = {},
-      tsserver = {},
-      gopls = {},
+      emmet_ls = {
+        filetypes = {
+          "php",
+          "html",
+          "javascript",
+        },
+      },
+      ts_ls = {},
       lemminx = {},
       volar = {},
       angularls = {},
       astro = {},
       jdtls = {},
+      phpactor = {
+        root_dir = require("lspconfig").util.root_pattern("*.php", ".git", "composer.*"),
+      },
       lua_ls = {
         settings = {
           Lua = {

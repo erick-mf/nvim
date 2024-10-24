@@ -12,7 +12,7 @@ return {
     {
       "<leader>sa",
       function()
-        require("harpoon"):list():append()
+        require("harpoon"):list():add()
       end,
     },
     {
