@@ -51,14 +51,14 @@ return {
       layouts = {
         {
           elements = {
-            { id = "breakpoints", size = 0.25 },
-            { id = "scopes", size = 0.50 }, --[[ "watches" ]]
-            { id = "stacks", size = 0.25 },
+            { id = "breakpoints", size = 0.20 },
+            { id = "scopes", size = 0.60 }, --[[ "watches" ]]
+            { id = "stacks", size = 0.20 },
           },
           size = 60,
           position = "left",
         },
-        { elements = { "repl", "console" }, size = 0.25, position = "bottom" },
+        { elements = { "repl", "console" }, size = 0.20, position = "bottom" },
       },
       render = { indent = 2 },
     })

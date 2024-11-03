@@ -16,7 +16,8 @@ return {
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     { "j-hui/fidget.nvim", opts = {} },
-    { "folke/neodev.nvim", opts = {} },
+    { "folke/neodev.nvim", opts = {library = { plugins = { "nvim-dap-ui" }, types = true },
+} },
   },
   config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -93,5 +94,7 @@ return {
         end,
       },
     })
+
+    require("neodev").setup({library = { plugins = { "nvim-dap-ui" }, types = true }})
   end,
 }

@@ -60,7 +60,7 @@ vim.keymap.set(
 
 vim.keymap.set("n", "<c-u>", "6k", { noremap = true, silent = true })
 vim.keymap.set("n", "<c-d>", "6j", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>e", vim.cmd.ex, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>e", "<cmd>Explore<cr>", { noremap = true, silent = true })
 
 vim.keymap.set({ "n", "v" }, "<leader>y", '"zy', { noremap = true, silent = true, desc = "copiar al registro z" })
 vim.keymap.set(
