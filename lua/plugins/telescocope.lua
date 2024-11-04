@@ -47,6 +47,7 @@ return {
           i = {
             ["<C-c>"] = "close",
             ["<C-q>"] = "close",
+            ["<C-h>"] = "which_key",
           },
         },
         history = {
@@ -88,7 +89,7 @@ return {
     {
       "<leader>ff",
       function()
-        local opt = { show_untracked = true, cwd = "%:p:h" }
+        local opt = { show_untracked = true }
         local ok = pcall(require("telescope.builtin").git_files, opt)
         if not ok then
           require("telescope.builtin").find_files({ opt })

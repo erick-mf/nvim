@@ -6,35 +6,60 @@ return {
     "williamboman/mason.nvim",
     "jay-babu/mason-nvim-dap.nvim",
   },
-  keys = function(_, keys)
-    local dap = require("dap")
-    local dapui = require("dapui")
-    return {
-      { "<F5>", dap.continue, desc = "Debug: Start/Continue" },
-      { "<F1>", dap.step_into, desc = "Debug: Step Into" },
-      { "<F2>", dap.step_over, desc = "Debug: Step Over" },
-      { "<F3>", dap.step_out, desc = "Debug: Step Out" },
-      {
-        "<F10>",
-        function()
-          dap.terminate()
-          dap.close()
-          dap.clear_breakpoints()
-          dapui.close()
-        end,
-        desc = "Debug: Terminate",
-      },
-      { "<leader>b", dap.set_breakpoint, desc = "Debug: Set Breakpoint" },
-      {
-        "<leader>B",
-        function()
-          dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-        end,
-        desc = "Debug: Set Breakpoint Conditional",
-      },
-      unpack(keys),
-    }
-  end,
+  keys = {
+    {
+      "<F5>",
+      function()
+        require("dap").continue()
+      end,
+      desc = "Debug: Start/Continue",
+    },
+    {
+      "<F1>",
+      function()
+        require("dap").step_into()
+      end,
+      desc = "Debug: Step Into",
+    },
+    {
+      "<F2>",
+      function()
+        require("dap").step_over()
+      end,
+      desc = "Debug: Step Over",
+    },
+    {
+      "<F3>",
+      function()
+        require("dap").step_out()
+      end,
+      desc = "Debug: Step Out",
+    },
+    {
+      "<F10>",
+      function()
+        require("dap").terminate()
+        require("dap").close()
+        require("dap").clear_breakpoints()
+        require("dapui").close()
+      end,
+      desc = "Debug: Terminate",
+    },
+    {
+      "<leader>b",
+      function()
+        require("dap").set_breakpoint()
+      end,
+      desc = "Debug: Set Breakpoint",
+    },
+    {
+      "<leader>B",
+      function()
+        require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+      end,
+      desc = "Debug: Set Breakpoint Conditional",
+    },
+  },
   config = function()
     local dap = require("dap")
     local dapui = require("dapui")

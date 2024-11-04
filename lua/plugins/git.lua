@@ -4,7 +4,7 @@ return {
     enabled = false,
     keys = {
       { "<leader>G", "<cmd>Git<cr>", desc = "Git commit" },
-      { "<leader>gp", "<cmd>Git pull<cr>", desc = "Git pull rebase" },
+      { "<leader>gp", "<cmd>Git pull<cr>", desc = "Git pull" },
     },
     cmd = { "G", "Git" },
   },
@@ -16,9 +16,9 @@ return {
     },
     keys = {
       { "<leader>G", "<cmd>Neogit cwd=%:p:h<cr>", desc = "Git commit" },
-      { "<leader>gp", "<cmd>Git pull<cr>", desc = "Git pull rebase" },
+      { "<leader>gp", "<cmd>Git pull<cr>", desc = "Git pull" },
     },
-    cmd = { "Neogit cwd=%:p:h"},
+    cmd = { "Neogit cwd=%:p:h" },
     config = true,
-  }
+  },
 }

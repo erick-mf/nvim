@@ -15,9 +15,7 @@ return {
     },
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
-    { "j-hui/fidget.nvim", opts = {} },
-    { "folke/neodev.nvim", opts = {library = { plugins = { "nvim-dap-ui" }, types = true },
-} },
+    "folke/lazydev.nvim",
   },
   config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -28,6 +26,7 @@ return {
         end
         map("<leader>vd", vim.diagnostic.open_float, "Diagnostic")
         map("gd", vim.lsp.buf.definition, "Goto Definition")
+        map("gi", vim.lsp.buf.implementation, "Implementation")
         map("gr", "<cmd>Telescope lsp_references initial_mode=normal<cr>", "Goto References")
         map("<leader>rn", vim.lsp.buf.rename, "Rename")
         map("<A-f>", vim.lsp.buf.format, "Format")
@@ -43,13 +42,7 @@ return {
     local servers = {
       html = {},
       cssls = {},
-      emmet_ls = {
-        filetypes = {
-          "php",
-          "html",
-          "javascript",
-        },
-      },
+      emmet_ls = {},
       ts_ls = {},
       lemminx = {},
       volar = {},
@@ -65,7 +58,7 @@ return {
             completion = {
               callSnippet = "Replace",
             },
-            diagnostic = {
+            diagnostics = {
               globals = { "vim" },
             },
           },
@@ -78,6 +71,7 @@ return {
     vim.list_extend(ensure_installed, {
       "stylua",
       "prettier",
+      "php-cs-fixer",
     })
     require("mason-tool-installer").setup({
       ensure_installed = ensure_installed,
@@ -95,6 +89,6 @@ return {
       },
     })
 
-    require("neodev").setup({library = { plugins = { "nvim-dap-ui" }, types = true }})
+    require("lazydev").setup()
   end,
 }

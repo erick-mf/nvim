@@ -69,3 +69,4 @@ vim.keymap.set(
   '"zp',
   { noremap = true, silent = true, desc = "pegar del registro z después" }
 )
+vim.keymap.set("n", "<C-s>", "<cmd>w<cr>")

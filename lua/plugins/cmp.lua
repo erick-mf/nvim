@@ -9,8 +9,9 @@ return {
     "petertriho/cmp-git",
     "saadparwaiz1/cmp_luasnip",
     "onsails/lspkind-nvim",
-    "rafamadriz/friendly-snippets",
-    { "L3MON4D3/LuaSnip", version = "v2.*" },
+    { "L3MON4D3/LuaSnip", version = "v2.*", dependencies = {
+      "rafamadriz/friendly-snippets",
+    } },
   },
   event = { "InsertEnter", "CmdlineEnter" },
   config = function()
@@ -30,7 +31,7 @@ return {
         end,
       },
       mapping = {
-        ["<C-n>"] = cmp.mapping(function(fallback)
+        ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
           elseif luasnip.expand_or_jumpable() then
@@ -42,17 +43,49 @@ return {
         ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
         ["<C-space>"] = cmp.mapping.complete(),
         ["<C-e>"] = cmp.mapping.abort(),
-        ["<CR>"] = cmp.mapping.confirm({
+        ["<cr>"] = cmp.mapping.confirm({
           behavior = cmp.ConfirmBehavior.Insert,
           select = false,
         }),
       },
       sources = cmp.config.sources({
-        { name = "path" },
-        { name = "nvim_lsp" },
+        {
+          name = "nvim_lsp",
+          entry_filter = function(entry, ctx)
+            local kind = require("cmp.types").lsp.CompletionItemKind[entry:get_kind()]
+
+            -- Excluir entradas de tipo "Text"
+            if kind == "Text" then
+              return false
+            end
+
+            -- Obtener el texto antes del cursor
+            local line = ctx.cursor.line
+            local col = ctx.cursor_before_line:len()
+            local current_line = vim.api.nvim_buf_get_lines(0, line, line + 1, false)[1]
+            local text_before_cursor = current_line:sub(1, col)
+
+            -- Filtrar basado en el contexto
+            if text_before_cursor:match("[%.%->]%w*$") then
+              -- Si estamos después de un punto o una flecha, mostrar solo métodos, propiedades y campos
+              return kind == "Method" or kind == "Property" or kind == "Field"
+            elseif text_before_cursor:match("new%s+%w*$") then
+              -- Si estamos después de 'new', mostrar solo clases
+              return kind == "Class"
+            elseif text_before_cursor:match("::%w*$") then
+              -- Si estamos después de '::', mostrar métodos estáticos y constantes
+              return kind == "Method" or kind == "Constant"
+            end
+
+            -- Para otros casos, mostrar todas las entradas excepto "Text"
+            return true
+          end,
+        },
         { name = "nvim_lua" },
         { name = "luasnip" },
-        { name = "buffer", keyword_length = 4 },
+        { name = "path" },
+        { name = "lazydev", group_index = 0 },
+        { name = "buffer", group_index = 5 },
       }),
       formatting = {
         expandable_indicator = false,
@@ -61,11 +94,11 @@ return {
           show_labelDetails = true,
           mode = "symbol_text",
           menu = {
-            path = "[PATH]",
             nvim_lsp = "[LSP]",
             nvim_lua = "[API]",
-            buffer = "[BUF]",
             luasnip = "[SNIP]",
+            path = "[PATH]",
+            buffer = "[BUF]",
           },
           before = function(entry, vim_item)
             local KIND_ICONS = {
