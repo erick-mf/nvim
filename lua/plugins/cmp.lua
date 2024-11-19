@@ -31,7 +31,7 @@ return {
         end,
       },
       mapping = {
-        ["<Tab>"] = cmp.mapping(function(fallback)
+        ["<C-n>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
           elseif luasnip.expand_or_jumpable() then
@@ -84,8 +84,8 @@ return {
         { name = "nvim_lua" },
         { name = "luasnip" },
         { name = "path" },
-        { name = "lazydev", group_index = 0 },
-        { name = "buffer", group_index = 5 },
+        { name = "lazydev" },
+        { name = "buffer", group_index = 10 },
       }),
       formatting = {
         expandable_indicator = false,

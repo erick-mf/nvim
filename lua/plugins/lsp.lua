@@ -36,6 +36,8 @@ return {
       end,
     })
 
+    require("lazydev").setup()
+
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
@@ -50,7 +52,14 @@ return {
       astro = {},
       jdtls = {},
       phpactor = {
-        root_dir = require("lspconfig").util.root_pattern("*.php", ".git", "composer.*"),
+        root_dir = require("lspconfig.util").root_pattern("composer.json", ".git", "*.php"),
+        filetypes = { "php" },
+        init_options = {
+          ["language_server_phpstan.enabled"] = false,
+          ["language_server_psalm.enabled"] = false,
+          ["code_transform.import_globals"] = true,
+          ["language_server_completion.trim_leading_dollar"] = true,
+        },
       },
       lua_ls = {
         settings = {
@@ -88,7 +97,5 @@ return {
         end,
       },
     })
-
-    require("lazydev").setup()
   end,
 }

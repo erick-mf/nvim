@@ -6,7 +6,6 @@ return {
     config = function()
       local util = require("formatter.util")
 
-      -- Función auxiliar para crear configuraciones de Prettier
       local function prettier_config()
         return {
           exe = "prettier",
@@ -28,7 +27,6 @@ return {
           html = { prettier_config },
           css = { prettier_config },
           json = { prettier_config },
-          -- Otros tipos de archivo que usan Prettier
           lua = { require("formatter.filetypes.lua").stylua },
           java = { require("formatter.filetypes.c").clangformat },
           xml = { require("formatter.filetypes.xml").xmlformat },

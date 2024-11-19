@@ -26,6 +26,10 @@ return {
         ["vim.lsp.util.stylize_markdown"] = true,
         ["cmp.entry.get_documentation"] = true,
       },
+      hover = {
+        enable = true,
+        silent = true,
+      },
     },
     presets = {
       bottom_search = true,
