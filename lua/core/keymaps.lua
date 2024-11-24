@@ -25,16 +25,16 @@ vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { noremap = true, silent = true
 vim.keymap.set("n", "<leader>qq", ":bd!<CR>", { noremap = true, silent = true, desc = "Splits quit" })
 vim.keymap.set("n", "<C-q>", ":bd<CR>", { noremap = true, silent = true, desc = "Splits quit" })
 vim.keymap.set(
-  "n",
-  "<A-v>",
-  ":vnew +set\\ buftype=nofile<CR>",
-  { noremap = true, silent = true, desc = "Splits vertical" }
+	"n",
+	"<A-v>",
+	":vnew +set\\ buftype=nofile<CR>",
+	{ noremap = true, silent = true, desc = "Splits vertical" }
 )
 vim.keymap.set(
-  "n",
-  "<A-s>",
-  ":new +set\\ buftype=nofile<CR>",
-  { noremap = true, silent = true, desc = "Splits horizontal" }
+	"n",
+	"<A-s>",
+	":new +set\\ buftype=nofile<CR>",
+	{ noremap = true, silent = true, desc = "Splits horizontal" }
 )
 
 -- windows
@@ -52,21 +52,33 @@ vim.keymap.set("n", "<C-p>", "<cmd>bprev<cr>", { noremap = true, silent = true, 
 
 -- indentar codigo
 vim.keymap.set(
-  { "n", "v" },
-  "<leader>F",
-  "mm=G`m",
-  { noremap = true, silent = true, desc = "Indent code without plugin" }
+	{ "n", "v" },
+	"<leader>F",
+	"mm=G`m",
+	{ noremap = true, silent = true, desc = "Indent code without plugin" }
 )
 
-vim.keymap.set("n", "<c-u>", "6k", { noremap = true, silent = true })
-vim.keymap.set("n", "<c-d>", "6j", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<c-u>", "6k", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<c-d>", "6j", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>e", "<cmd>Explore<cr>", { noremap = true, silent = true })
 
+vim.keymap.set({ "n", "v" }, "<leader>x", '"zx', { noremap = true, silent = true, desc = "cortar al registro z" })
 vim.keymap.set({ "n", "v" }, "<leader>y", '"zy', { noremap = true, silent = true, desc = "copiar al registro z" })
 vim.keymap.set(
-  { "n", "v" },
-  "<leader>p",
-  '"zp',
-  { noremap = true, silent = true, desc = "pegar del registro z después" }
+	{ "n", "v" },
+	"<leader>p",
+	'"zp',
+	{ noremap = true, silent = true, desc = "pegar del registro z" }
 )
-vim.keymap.set("n", "<C-s>", "<cmd>w<cr>")
+
+-- close all buffers execpt my current buffer
+vim.keymap.set("n", "<leader>qa", function()
+	vim.cmd("wa")
+	local current_buf = vim.api.nvim_get_current_buf()
+	local buffers = vim.api.nvim_list_bufs()
+	for _, buf in ipairs(buffers) do
+		if buf ~= current_buf and vim.api.nvim_buf_is_valid(buf) then
+			vim.api.nvim_buf_delete(buf, { force = true })
+		end
+	end
+end, { noremap = true, silent = true, desc = "Close all buffers except current" })
