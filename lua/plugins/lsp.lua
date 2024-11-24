@@ -33,6 +33,13 @@ return {
         map("<leader>vc", vim.lsp.buf.code_action, "Code Action")
         map("K", vim.lsp.buf.hover, "Hover Documentation")
         vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help" })
+
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+          map("<leader>th", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+          end, "[T]oggle Inlay [H]ints")
+        end
       end,
     })
 
@@ -55,10 +62,24 @@ return {
         root_dir = require("lspconfig.util").root_pattern("composer.json", ".git", "*.php"),
         filetypes = { "php" },
         init_options = {
-          ["language_server_phpstan.enabled"] = false,
-          ["language_server_psalm.enabled"] = false,
+          ["language_server_configuration.auto_config"] = true,
+          ["language_server_worse_reflection.inlay_hints.enable"] = true,
+          ["language_server_worse_reflection.inlay_hints.types"] = false,
+          ["language_server_worse_reflection.inlay_hints.params"] = true,
           ["code_transform.import_globals"] = true,
-          ["language_server_completion.trim_leading_dollar"] = true,
+        },
+        handlers = {
+          ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+            -- Verifica si el archivo está en el directorio de vistas
+            if string.match(result.uri, "/[vV]i[es][wt][as]?/") then
+              -- Filtra los diagnósticos para eliminar los avisos de variables no definidas
+              result.diagnostics = vim.tbl_filter(function(diagnostic)
+                return not string.match(diagnostic.message, "Undefined variable")
+              end, result.diagnostics)
+            end
+            -- Llama al handler estándar con los diagnósticos filtrados
+            vim.lsp.handlers["textDocument/publishDiagnostics"](err, result, ctx, config)
+          end,
         },
       },
       lua_ls = {
@@ -80,7 +101,7 @@ return {
     vim.list_extend(ensure_installed, {
       "stylua",
       "prettier",
-      "php-cs-fixer",
+      "phpcbf",
     })
     require("mason-tool-installer").setup({
       ensure_installed = ensure_installed,

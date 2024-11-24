@@ -19,6 +19,19 @@ return {
         }
       end
 
+      local function sqlfluff_config()
+        return {
+          exe = "sqlfluff",
+          args = {
+            "format",
+            "--disable-progress-bar",
+            "--nocolor",
+            "--dialect=mysql",
+            "-",
+          },
+          stdin = true,
+        }
+      end
       require("formatter").setup({
         logging = true,
         filetype = {
@@ -30,7 +43,8 @@ return {
           lua = { require("formatter.filetypes.lua").stylua },
           java = { require("formatter.filetypes.c").clangformat },
           xml = { require("formatter.filetypes.xml").xmlformat },
-          php = { require("formatter.filetypes.php").php_cs_fixer },
+          php = { require("formatter.filetypes.php").phpcbf },
+          sql = { sqlfluff_config },
           ["*"] = { require("formatter.filetypes.any").remove_trailing_whitespace },
         },
       })

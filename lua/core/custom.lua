@@ -81,11 +81,3 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "*",
-  callback = function()
-    if vim.b.editorconfig == nil then
-      vim.b.editorconfig = vim.fn.expand("~/.editorconfig")
-    end
-  end,
-})
