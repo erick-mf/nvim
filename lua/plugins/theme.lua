@@ -25,28 +25,29 @@ return {
 					lsp_trouble = true,
 				},
 			})
-			vim.cmd.colorscheme("catppuccin")
+			-- vim.cmd.colorscheme("catppuccin")
 		end,
 	},
 	{
-		"folke/tokyonight.nvim",
+		"rebelot/kanagawa.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
-			require("tokyonight").setup({
+			require("kanagawa").setup({
+				commentStyle = { italic = true },
+				keywordStyle = { italic = true },
 				transparent = true,
-				style = "night",
-				styles = {
-					comments = { italic = true },
-					keywords = { italic = true },
+				colors = {
+					theme = {
+						all = {
+							ui = {
+								bg_gutter = "none",
+							},
+						},
+					},
 				},
-				-- Change the "hint" color to the "orange" color, and make the "error" color bright red
-				on_colors = function(colors)
-					colors.hint = colors.orange
-					colors.error = "#ff0000"
-				end,
 			})
-			-- vim.cmd.colorscheme("tokyonight")
+			vim.cmd("colorscheme kanagawa-wave")
 		end,
 	},
 }

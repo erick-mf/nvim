@@ -42,6 +42,7 @@ return {
 					["ctrl-q"] = "abort",
 					["ctrl-d"] = "preview-down",
 					["ctrl-u"] = "preview-up",
+					["change"] = "first",
 				},
 			},
 			previewers = {
@@ -75,7 +76,7 @@ return {
 					},
 				},
 			},
-		})
+		}, "fzf-native")
 	end,
 	keys = {
 		{
@@ -97,7 +98,7 @@ return {
 		{
 			"<leader>gs",
 			function()
-				require("fzf-lua").git_status()
+				require("fzf-lua").git_status({ cwd = "%:p:h" })
 			end,
 			desc = "Git Status",
 			opts,
@@ -105,24 +106,46 @@ return {
 		{
 			"<leader>gl",
 			function()
-				require("fzf-lua").git_commits()
+				require("fzf-lua").git_commits({ cwd = "%:p:h" })
 			end,
 			desc = "Git commits",
 			opts,
 		},
+		-- {
+		-- 	"<leader>ff",
+		-- 	function()
+		-- 		-- Comprueba si estamos en un repositorio Git
+		-- 		local is_git_repo = vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null") == "true\n"
+		--
+		-- 		if is_git_repo then
+		-- 			require("fzf-lua").git_files({ silent = true })
+		-- 		else
+		-- 			require("fzf-lua").files({ silent = true })
+		-- 		end
+		-- 	end,
+		-- 	desc = "Git/Find files",
+		-- 	opts,
+		-- },
 		{
 			"<leader>ff",
 			function()
-				-- Comprueba si estamos en un repositorio Git
+				require("fzf-lua").files({
+					silent = true,
+				})
+			end,
+			desc = "Find files",
+			opts,
+		},
+		{
+			"<leader>gf",
+			function()
 				local is_git_repo = vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null") == "true\n"
 
 				if is_git_repo then
 					require("fzf-lua").git_files({ silent = true })
-				else
-					require("fzf-lua").files({ silent = true })
 				end
 			end,
-			desc = "Git/Find files",
+			desc = "Git files",
 			opts,
 		},
 		{
@@ -144,6 +167,7 @@ return {
 				require("fzf-lua").files({
 					cwd = vim.fn.stdpath("config"),
 					prompt = "Plugins> ",
+					silent = true,
 				})
 			end,
 			desc = "Open neovim config",

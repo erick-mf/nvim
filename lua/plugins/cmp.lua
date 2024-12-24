@@ -9,9 +9,13 @@ return {
 		"petertriho/cmp-git",
 		"saadparwaiz1/cmp_luasnip",
 		"onsails/lspkind-nvim",
-		{ "L3MON4D3/LuaSnip", version = "v2.*", dependencies = {
-			"rafamadriz/friendly-snippets",
-		} },
+		{
+			"L3MON4D3/LuaSnip",
+			version = "v2.*",
+			dependencies = {
+				"rafamadriz/friendly-snippets",
+			},
+		},
 	},
 	event = { "InsertEnter", "CmdlineEnter" },
 	config = function()
@@ -135,8 +139,12 @@ return {
 				entries = { name = "custom" },
 			},
 			window = {
-				completion = cmp.config.window.bordered(),
-				documentation = cmp.config.window.bordered(),
+				completion = cmp.config.window.bordered({
+					winhighlight = "cursorline:pmenusel,search:none",
+				}),
+				documentation = cmp.config.window.bordered({
+					winhighlight = "cursorline:pmenusel,search:none",
+				}),
 			},
 			sorting = {
 				priority_weight = 2,
