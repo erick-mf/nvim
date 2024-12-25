@@ -69,8 +69,8 @@ return {
 				code_actions = {
 					previewer = false, -- Desactiva el previsualizador
 					winopts = {
-						height = 0.3, -- Ajusta la altura según prefieras
-						width = 0.5, -- Ajusta el ancho según prefieras
+						height = 0.3,
+						width = 0.5,
 						row = 0.5, -- Centra verticalmente
 						col = 0.5, -- Centra horizontalmente
 					},
@@ -98,7 +98,7 @@ return {
 		{
 			"<leader>gs",
 			function()
-				require("fzf-lua").git_status({ cwd = "%:p:h" })
+				require("fzf-lua").git_status({ cwd = vim.fn.getcwd() })
 			end,
 			desc = "Git Status",
 			opts,
@@ -106,7 +106,7 @@ return {
 		{
 			"<leader>gl",
 			function()
-				require("fzf-lua").git_commits({ cwd = "%:p:h" })
+				require("fzf-lua").git_commits({ cwd = vim.fn.getcwd() })
 			end,
 			desc = "Git commits",
 			opts,
@@ -129,9 +129,7 @@ return {
 		{
 			"<leader>ff",
 			function()
-				require("fzf-lua").files({
-					silent = true,
-				})
+				require("fzf-lua").files({ silent = true })
 			end,
 			desc = "Find files",
 			opts,
