@@ -17,15 +17,6 @@ return {
 					layout = "vertical",
 					vertical = "down:55%",
 				},
-				hls = {
-					normal = "Normal",
-					border = "Normal",
-					cursor = "Cursor",
-					cursorline = "CursorLine",
-					search = "Search",
-					scrollbar_f = "PmenuThumb",
-					scrollbar_e = "PmenuSbar",
-				},
 			},
 			fzf_opts = {
 				["--layout"] = "reverse",
