@@ -23,17 +23,15 @@ return {
 			},
 			keymap = {
 				builtin = {
-					["ctrl-c"] = "close",
-					["ctrl-q"] = "close",
-					["ctrl-d"] = "preview-down",
-					["ctrl-u"] = "preview-up",
+					["<C-c>"] = "close",
+					["<C-d>"] = "preview-down",
+					["<C-u>"] = "preview-up",
 				},
 				fzf = {
+					["change"] = "first",
 					["ctrl-c"] = "abort",
-					["ctrl-q"] = "abort",
 					["ctrl-d"] = "preview-down",
 					["ctrl-u"] = "preview-up",
-					["change"] = "first",
 				},
 			},
 			previewers = {
