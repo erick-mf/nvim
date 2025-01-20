@@ -1,3 +1,4 @@
+local groupErick = vim.api.nvim_create_augroup("GroupErick", { clear = true })
 return {
 	{
 		"mhartington/formatter.nvim",
@@ -32,6 +33,17 @@ return {
 					stdin = true,
 				}
 			end
+
+			local function blade_formatter_config()
+				return {
+					exe = "blade-formatter",
+					args = {
+						"--stdin",
+						-- "--wrap-attributes=preserve",
+					},
+					stdin = true,
+				}
+			end
 			require("formatter").setup({
 				logging = true,
 				filetype = {
@@ -44,6 +56,7 @@ return {
 					java = { require("formatter.filetypes.c").clangformat },
 					xml = { require("formatter.filetypes.xml").xmlformat },
 					php = { require("formatter.filetypes.php").phpcbf },
+					blade = { blade_formatter_config },
 					sql = { sqlfluff_config },
 					["*"] = { require("formatter.filetypes.any").remove_trailing_whitespace },
 				},
@@ -51,6 +64,7 @@ return {
 
 			-- Formatear automáticamente al guardar
 			vim.api.nvim_create_autocmd("BufWritePost", {
+				group = groupErick,
 				pattern = "*",
 				command = "FormatWrite",
 			})

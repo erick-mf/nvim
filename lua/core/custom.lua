@@ -16,35 +16,25 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 	end,
 })
 
---turn off paste mode when leaving insert
-vim.api.nvim_create_autocmd("InsertLeave", {
-	group = groupErick,
-	pattern = "*",
-	command = "set nopaste",
-})
-
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	group = groupErick,
 	callback = function()
-		vim.cmd([[%s/\r//e]]) -- quitar los saltos de line en Windows
-		vim.cmd([[%s/\s\+$//e]])
+		if vim.bo.modifiable and not vim.bo.readonly then
+			-- local view = vim.fn.winsaveview()
+			vim.cmd([[silent! %s/\r//ge]])
+			vim.cmd([[silent! %s/\s\+$//ge]])
+			-- vim.fn.winrestview(view)
+		end
 	end,
 })
 
-vim.api.nvim_create_autocmd("BufEnter", {
-	group = groupErick,
-	pattern = { ".env" },
-	callback = function()
-		vim.cmd([[CloakEnable]])
-	end,
-})
-
+vim.api.nvim_set_hl(0, "YankHighlight", { bg = "#FFA500" })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	group = groupErick,
 	pattern = "*",
 	callback = function()
 		vim.highlight.on_yank({
-			higroup = "IncSearch",
+			higroup = "YankHighlight",
 			timeout = 40,
 		})
 	end,

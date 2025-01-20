@@ -3,19 +3,22 @@ local opts = { noremap = true, silent = true }
 return {
 	"ibhagwan/fzf-lua",
 	dependencies = {
-		"nvim-tree/nvim-web-devicons",
+		-- "nvim-tree/nvim-web-devicons",
+		{ "echasnovski/mini.icons", opts = {} },
 	},
 	config = function()
 		local fzf = require("fzf-lua")
 		fzf.setup({
 			winopts = {
 				height = 0.8,
-				width = 0.6,
+				width = 0.8,
 				row = 0.5,
 				col = 0.5,
 				preview = {
-					layout = "vertical",
-					vertical = "down:55%",
+					-- 	layout = "vertical",
+					-- 	vertical = "down:55%",
+					scrollbar = false,
+					scrolloff = -2,
 				},
 			},
 			fzf_opts = {
@@ -29,6 +32,7 @@ return {
 				},
 				fzf = {
 					["change"] = "first",
+					["alt-a"] = "toggle-all",
 					["ctrl-c"] = "abort",
 					["ctrl-d"] = "preview-down",
 					["ctrl-u"] = "preview-up",
@@ -48,7 +52,7 @@ return {
 			},
 			git = {
 				files = {
-					cmd = 'git ls-files --exclude-standard --cached --others | grep -v -E "vendor/|node_modules/|public/bootstrap/"',
+					cmd = 'git ls-files --exclude-standard --cached | grep -v -E "vendor/|node_modules/|public/bootstrap/"',
 				},
 			},
 			grep = {
@@ -87,7 +91,18 @@ return {
 		{
 			"<leader>gs",
 			function()
-				require("fzf-lua").git_status({ cwd = vim.fn.getcwd() })
+				local function find_git_root()
+					local current_file = vim.fn.expand("%:p:h")
+					local git_root = vim.fn.systemlist(
+						"git -C " .. vim.fn.shellescape(current_file) .. " rev-parse --show-toplevel"
+					)[1]
+					return git_root
+				end
+
+				local git_root = find_git_root()
+				if git_root then
+					require("fzf-lua").git_status({ cwd = git_root })
+				end
 			end,
 			desc = "Git Status",
 			opts,
@@ -95,7 +110,7 @@ return {
 		{
 			"<leader>gl",
 			function()
-				require("fzf-lua").git_commits({ cwd = vim.fn.getcwd() })
+				require("fzf-lua").git_commits({ cwd = vim.fn.expand("%:p:h") })
 			end,
 			desc = "Git commits",
 			opts,
@@ -129,7 +144,7 @@ return {
 				local is_git_repo = vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null") == "true\n"
 
 				if is_git_repo then
-					require("fzf-lua").git_files({ silent = true })
+					require("fzf-lua").git_files({ cwd = vim.fn.expand("%:p:h"), silent = true })
 				end
 			end,
 			desc = "Git files",
@@ -188,18 +203,31 @@ return {
 		},
 		{
 			"<leader>fn",
-			function()
-				require("fzf-lua").grep({ search = "TODO|NOTE", no_esc = true })
-			end,
+			"<cmd>TodoFzfLua<cr>",
 			desc = "Todos",
 			opts,
 		},
 		{
-			"<leader>fx",
+			"gm",
 			function()
-				require("fzf-lua").grep({ search = "FIX|BUG", no_esc = true })
+				local function has_document_symbols()
+					local params = { textDocument = vim.lsp.util.make_text_document_params() }
+					local result = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
+					for _, res in pairs(result or {}) do
+						if res.result and #res.result > 0 then
+							return true
+						end
+					end
+					return false
+				end
+
+				if has_document_symbols() then
+					vim.cmd("FzfLua lsp_document_symbols")
+				else
+					return
+				end
 			end,
-			desc = "Todo Fix",
+			desc = "LSP Document Symbols",
 			opts,
 		},
 	},

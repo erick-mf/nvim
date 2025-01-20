@@ -5,6 +5,7 @@ return {
 		"nvim-neotest/nvim-nio",
 		"williamboman/mason.nvim",
 		"jay-babu/mason-nvim-dap.nvim",
+		"theHamsta/nvim-dap-virtual-text",
 	},
 	keys = {
 		{
@@ -38,10 +39,11 @@ return {
 		{
 			"<F10>",
 			function()
-				require("dap").terminate()
-				require("dap").close()
-				require("dap").clear_breakpoints()
 				require("dapui").close()
+				require("dap").clear_breakpoints()
+				require("dap").close()
+				require("dap").terminate()
+				require("nvim-dap-virtual-text.virtual_text").clear_virtual_text()
 			end,
 			desc = "Debug: Terminate",
 		},
@@ -63,6 +65,9 @@ return {
 	config = function()
 		local dap = require("dap")
 		local dapui = require("dapui")
+		require("nvim-dap-virtual-text").setup({
+			commented = true,
+		})
 
 		require("mason-nvim-dap").setup({
 			automatic_installation = true,
@@ -76,9 +81,9 @@ return {
 			layouts = {
 				{
 					elements = {
-						{ id = "breakpoints", size = 0.20 },
-						{ id = "scopes", size = 0.60 }, --[[ "watches" ]]
-						{ id = "stacks", size = 0.20 },
+						{ id = "breakpoints", size = 0.30 },
+						{ id = "scopes", size = 0.70 }, --[[ "watches" ]]
+						-- { id = "stacks", size = 0.20 },
 					},
 					size = 60,
 					position = "left",
@@ -130,8 +135,8 @@ return {
 				name = "Launch Xdebug",
 				port = 9003,
 				-- program = "${file}",
-				cwd = "${workspaceFolder}",
-				console = "integratedTerminal",
+				-- cwd = "${workspaceFolder}",
+				-- console = "integratedTerminal",
 			},
 			{
 				type = "php",

@@ -51,6 +51,8 @@ return {
 					behavior = cmp.ConfirmBehavior.Insert,
 					select = false,
 				}),
+				["<C-b>"] = cmp.mapping.scroll_docs(-4),
+				["<C-f>"] = cmp.mapping.scroll_docs(4),
 			},
 			sources = cmp.config.sources({
 				{
@@ -88,7 +90,7 @@ return {
 				{ name = "nvim_lua" },
 				{ name = "luasnip" },
 				{ name = "path" },
-				{ name = "lazydev" },
+				{ name = "lazydev", group_index = 0 },
 				{ name = "buffer", group_index = 10 },
 			}),
 			formatting = {

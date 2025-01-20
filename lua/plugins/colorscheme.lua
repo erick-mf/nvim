@@ -46,8 +46,40 @@ return {
 						},
 					},
 				},
+				overrides = function()
+					return {
+						NormalFloat = { bg = "none" },
+						FloatBorder = { bg = "none" },
+						FloatTitle = { bg = "none" },
+						FloatermBorder = { bg = "none", fg = "none" },
+					}
+				end,
 			})
-			vim.cmd("colorscheme kanagawa-wave")
+			vim.cmd.colorscheme("kanagawa-wave")
+		end,
+	},
+	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+		config = function()
+			require("rose-pine").setup({
+				styles = {
+					bold = true,
+					italic = true,
+					transparency = true,
+				},
+				palette = {
+					moon = {
+						base = "#18191a",
+						overlay = "#363738",
+					},
+				},
+				highlight_groups = {
+					VertSplit = { fg = "muted", bg = "muted" },
+                    StatusLineTerm = {fg="none", bg="none"}
+				},
+			})
+			-- vim.cmd.colorscheme("rose-pine-moon")
 		end,
 	},
 }
